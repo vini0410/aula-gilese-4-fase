@@ -25,8 +25,6 @@ def add_musica():
         resp.status_code = 200
 
         return resp
-    else:
-        return not_found()
 
 
 @app.route('/musica')
@@ -60,10 +58,10 @@ def update_musica(id):
     musica = Musica(_json["musica"], _json["autor"], _json["genero"])
 
 
-    if _musica and _autor and _genero and _id and request.method == 'PUT':
+    if musica.musica and musica.autor and musica.genero and _id and request.method == 'PUT':
 
         mongo.db.musica.update_one({'_id': ObjectId(_id['$oid']) if '$oid' in _id else ObjectId(
-            _id)}, {'$set': {'musica': _musica, 'autor': _autor, 'genero': _genero}})
+            _id)}, {'$set': {'musica': musica.musica, 'autor': musica.autor, 'genero': musica.genero}})
 
         resp = jsonify("musica atualizada")
 
@@ -71,8 +69,6 @@ def update_musica(id):
 
         return resp
 
-    else:
-        return not_found()
 
 if __name__ == "__main__":
     app.run(debug=True)
